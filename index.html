@@ -545,10 +545,14 @@
         
         // --- スマホ操作用のイベントハンドラ ---
         function handleMobileControl(e, action) {
+            console.log('handleMobileControl called. isPaused:', isPaused, 'gameActive:', gameActive); // 呼び出しと主要な状態変数の確認
             e.preventDefault(); // デフォルトのタッチイベント（スクロールなど）を無効化
             if (!isPaused && gameActive) {
+                console.log('handleMobileControl: Conditions met, calling action.'); // 条件を満たした場合
                 action();
                 draw(); // 操作後に再描画
+            } else {
+                console.log('handleMobileControl: Conditions NOT met. isPaused:', isPaused, 'gameActive:', gameActive); // 条件を満たさなかった場合
             }
         }
 
@@ -559,7 +563,10 @@
         quitButton.addEventListener('click', quitGame);
         
         // モバイル操作を 'touchstart' イベントに変更して反応を良くする
-        mcUp.addEventListener('touchstart', (e) => handleMobileControl(e, rotatePiece));
+        mcUp.addEventListener('touchstart', (e) => {
+            console.log('mcUp touchstart triggered'); // mcUpボタンがタッチされたか確認
+            handleMobileControl(e, rotatePiece);
+        });
         mcLeft.addEventListener('touchstart', (e) => handleMobileControl(e, () => movePiece(-1)));
         mcRight.addEventListener('touchstart', (e) => handleMobileControl(e, () => movePiece(1)));
         mcDown.addEventListener('touchstart', (e) => handleMobileControl(e, dropPiece));
